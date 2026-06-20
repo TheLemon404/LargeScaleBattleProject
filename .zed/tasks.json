@@ -1,0 +1,7 @@
+[
+  {
+    "label": "Run Desktop",
+    "command": "gradle run",
+    "use_new_terminal": false,
+  },
+]
