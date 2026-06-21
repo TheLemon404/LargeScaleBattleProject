@@ -2,7 +2,7 @@ package org.engine.assets;
 
 import java.util.*;
 
-public class Registry {
+public class AssetRegistry {
 
     Map<Integer, Asset> loadedAssets = new HashMap<Integer, Asset>();
 }
