@@ -6,7 +6,12 @@ public class Entity {
     protected Entity parent;
 
     public Entity(Entity parent) {
-        Tree.registry.registerEntity(this);
+        try {
+            Tree.registry.registerEntity(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         this.parent = parent;
     }
 
