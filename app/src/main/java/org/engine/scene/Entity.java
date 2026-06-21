@@ -2,11 +2,11 @@ package org.engine.scene;
 
 public class Entity {
 
-    public int id;
-
+    protected int id;
     protected Entity parent;
 
     public Entity(Entity parent) {
+        Tree.registry.registerEntity(this);
         this.parent = parent;
     }
 
@@ -20,5 +20,9 @@ public class Entity {
 
     public void setParent(Entity entity) throws Exception {
         parent = entity;
+    }
+
+    public void destroy() {
+        Tree.registry.deregisterEntity(this);
     }
 }
