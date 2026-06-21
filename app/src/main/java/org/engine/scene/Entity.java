@@ -2,7 +2,7 @@ package org.engine.scene;
 
 public class Entity {
 
-    protected int id;
+    protected EID id;
     protected Entity parent;
 
     public Entity(Entity parent) {

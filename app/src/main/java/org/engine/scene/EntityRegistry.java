@@ -6,10 +6,10 @@ import java.util.Map;
 public class EntityRegistry {
 
     int nextId = 0;
-    private Map<Integer, Entity> entityMap = new HashMap<Integer, Entity>();
+    private Map<EID, Entity> entityMap = new HashMap<EID, Entity>();
 
     public void registerEntity(Entity entity) {
-        entity.id = nextId++;
+        entity.id = new EID(nextId++);
         entityMap.put(entity.id, entity);
     }
 
