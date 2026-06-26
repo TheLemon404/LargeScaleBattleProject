@@ -1,5 +1,10 @@
 package org.engine.graphics;
 
+import org.engine.scene.Entity;
+
 public interface Batchable {
-    public void batch(GraphicsContext context);
+    public void extractBatchInstanceData(
+        GraphicsContext context,
+        Batch<? extends Entity> batch
+    );
 }
