@@ -4,8 +4,6 @@
 package org;
 
 import org.engine.io.Window;
-import org.engine.scene.Entity;
-import org.engine.scene.Tree;
 
 public class App {
 

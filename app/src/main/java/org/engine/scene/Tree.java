@@ -4,6 +4,6 @@ import java.util.function.Supplier;
 
 public class Tree {
 
-    public static Entity root = new Entity();
+    public static EID root = new EID(0);
     public static EntityRegistry registry = new EntityRegistry();
 }

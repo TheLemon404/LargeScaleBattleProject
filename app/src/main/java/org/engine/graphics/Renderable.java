@@ -1,5 +1,5 @@
 package org.engine.graphics;
 
 public interface Renderable {
-    public void Draw(GraphicsContext context);
+    public void draw(GraphicsContext context);
 }

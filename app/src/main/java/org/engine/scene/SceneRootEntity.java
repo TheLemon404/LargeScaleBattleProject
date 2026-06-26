@@ -7,7 +7,7 @@ public class SceneRootEntity extends Entity {
     }
 
     @Override
-    public void setParent(Entity parent) throws Exception {
+    public void setParent(EID parent) throws Exception {
         throw new Exception(
             "Scene Root entities must only be parented to the Tree.root, and can never be reparented"
         );

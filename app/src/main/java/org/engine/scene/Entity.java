@@ -2,10 +2,35 @@ package org.engine.scene;
 
 public class Entity {
 
+    protected String name;
     protected EID id;
-    protected Entity parent;
+    protected EID parent;
 
-    public Entity(Entity parent) {
+    public Entity(String name, EID parent) {
+        this.name = name;
+
+        try {
+            Tree.registry.registerEntityWithName(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        this.parent = parent;
+    }
+
+    public Entity(String name) {
+        this.name = name;
+
+        try {
+            Tree.registry.registerEntityWithName(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        this.parent = Tree.root;
+    }
+
+    public Entity(EID parent) {
         try {
             Tree.registry.registerEntity(this);
         } catch (Exception e) {
@@ -19,11 +44,11 @@ public class Entity {
         this(Tree.root);
     }
 
-    public Entity getParent() {
+    public EID getParent() {
         return parent;
     }
 
-    public void setParent(Entity entity) throws Exception {
+    public void setParent(EID entity) throws Exception {
         parent = entity;
     }
 
