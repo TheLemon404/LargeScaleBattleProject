@@ -12,8 +12,8 @@ import org.joml.Vector2f;
 
 public class Input {
 
-    private static Vector2f mousePosition;
-    private static Vector2f mousePositionDelta;
+    private static Vector2f mousePosition = new Vector2f(0.0f, 0.0f);
+    private static Vector2f mousePositionDelta = new Vector2f(0.0f, 0.0f);
 
     private static Stack<
         AbstractMap.SimpleEntry<Integer, Boolean>
@@ -48,6 +48,34 @@ public class Input {
 
     public static boolean isKeyJustReleased(int glfwKey) {
         return keyStatesMap.get(glfwKey) == PressableState.JUST_RELEASED;
+    }
+
+    public static boolean isMouseButtonPressed(int glfwButton) {
+        return mouseButtonStatesMap.get(glfwButton) == PressableState.PRESSED;
+    }
+
+    public static boolean isMouseButtonJustPressed(int glfwButton) {
+        return (
+            mouseButtonStatesMap.get(glfwButton) == PressableState.JUST_PRESSED
+        );
+    }
+
+    public static boolean isMouseButtonReleased(int glfwButton) {
+        return mouseButtonStatesMap.get(glfwButton) == PressableState.RELEASED;
+    }
+
+    public static boolean isMouseButtonJustReleased(int glfwButton) {
+        return (
+            mouseButtonStatesMap.get(glfwButton) == PressableState.JUST_RELEASED
+        );
+    }
+
+    public static Vector2f getMousePosition() {
+        return mousePosition;
+    }
+
+    public static Vector2f getMousePositionDelta() {
+        return mousePositionDelta;
     }
 
     public static void glfwKeyCallback(

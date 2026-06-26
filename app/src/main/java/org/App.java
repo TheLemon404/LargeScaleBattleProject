@@ -3,11 +3,25 @@
  */
 package org;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
+import org.engine.io.Input;
 import org.engine.io.Window;
 
 public class App {
 
-    public static void mainLoop(float deltaTime) {}
+    public static void mainLoop(float deltaTime) {
+        System.out.println(
+            Input.isKeyJustPressed(GLFW_KEY_SPACE) +
+                " : " +
+                Input.isMouseButtonJustPressed(GLFW_MOUSE_BUTTON_1) +
+                " : " +
+                Input.getMousePosition()
+        );
+
+        Input.processPendingInput();
+    }
 
     public static void main(String[] args) {
         Window window = new Window();
