@@ -9,6 +9,20 @@ public class EntityRegistry {
     private Map<EID, Entity> entityMap = new HashMap<EID, Entity>();
     private Map<String, EID> entityNameMap = new HashMap<String, EID>();
 
+    public Entity getEntityById(EID id) throws RuntimeException {
+        if (!entityMap.containsKey(id)) throw new RuntimeException(
+            "entity of ID: " + id + " not found in registry"
+        );
+        return entityMap.get(id);
+    }
+
+    public Entity getEntityByName(String name) throws RuntimeException {
+        if (!entityNameMap.containsKey(name)) throw new RuntimeException(
+            "entity of name: " + name + " not found in registry"
+        );
+        return entityMap.get(entityNameMap.get(name));
+    }
+
     public void registerEntity(Entity entity) throws Exception {
         if (entityMap.containsKey(new EID(nextId))) throw new Exception(
             "Entity of id: " + nextId + " already registered with that ID"
