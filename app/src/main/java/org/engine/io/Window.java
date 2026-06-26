@@ -56,6 +56,10 @@ public class Window {
             );
         }
 
+        glfwSetKeyCallback(glfwWindow, Input::glfwKeyCallback);
+        glfwSetMouseButtonCallback(glfwWindow, Input::glfwMouseButtonCallback);
+        glfwSetCursorPosCallback(glfwWindow, Input::glfwMousePositionCallback);
+
         glfwMakeContextCurrent(glfwWindow);
         glfwSwapInterval(1);
         glfwShowWindow(glfwWindow);
