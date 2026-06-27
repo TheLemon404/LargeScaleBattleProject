@@ -76,10 +76,12 @@ public class Window {
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
         while (!ShouldClose()) {
+            glfwPollEvents();
+
+            loopFunction.accept(1.0f);
+
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glfwSwapBuffers(glfwWindow);
-            loopFunction.accept(1.0f);
-            glfwPollEvents();
         }
     }
 

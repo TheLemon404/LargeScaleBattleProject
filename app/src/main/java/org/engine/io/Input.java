@@ -99,7 +99,7 @@ public class Input {
         int action,
         int mods
     ) {
-        keyStateChangeStack.push(
+        mouseButtonStateChangeStack.push(
             new AbstractMap.SimpleEntry<Integer, Boolean>(
                 button,
                 action == GLFW_PRESS || action == GLFW_REPEAT ? true : false
@@ -121,6 +121,14 @@ public class Input {
         while (!keyStateChangeStack.empty()) {
             AbstractMap.SimpleEntry<Integer, Boolean> keyState =
                 keyStateChangeStack.pop();
+
+            if (!keyStatesMap.containsKey(keyState.getKey())) {
+                keyStatesMap.put(
+                    keyState.getKey(),
+                    PressableState.JUST_PRESSED
+                );
+                continue;
+            }
 
             if (
                 keyStatesMap.get(keyState.getKey()) ==
@@ -152,6 +160,14 @@ public class Input {
         while (!mouseButtonStateChangeStack.empty()) {
             AbstractMap.SimpleEntry<Integer, Boolean> mouseButtonState =
                 mouseButtonStateChangeStack.pop();
+
+            if (!mouseButtonStatesMap.containsKey(mouseButtonState.getKey())) {
+                mouseButtonStatesMap.put(
+                    mouseButtonState.getKey(),
+                    PressableState.JUST_PRESSED
+                );
+                continue;
+            }
 
             if (
                 mouseButtonStatesMap.get(mouseButtonState.getKey()) ==
