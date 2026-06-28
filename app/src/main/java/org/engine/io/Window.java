@@ -25,6 +25,15 @@ public class Window {
         this(1200, 800);
     }
 
+    public void glfwWindowResizeCallback(
+        long glfwWindow,
+        int width,
+        int height
+    ) {
+        this.width = width;
+        this.height = height;
+    }
+
     public void open(String title) throws IllegalStateException {
         GLFWErrorCallback.createPrint(System.err).set();
 
@@ -61,6 +70,7 @@ public class Window {
         glfwSetKeyCallback(glfwWindow, Input::glfwKeyCallback);
         glfwSetMouseButtonCallback(glfwWindow, Input::glfwMouseButtonCallback);
         glfwSetCursorPosCallback(glfwWindow, Input::glfwMousePositionCallback);
+        glfwSetWindowSizeCallback(glfwWindow, this::glfwWindowResizeCallback);
 
         glfwSwapInterval(1);
         glfwShowWindow(glfwWindow);
