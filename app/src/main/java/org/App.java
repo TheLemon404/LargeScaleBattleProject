@@ -12,6 +12,8 @@ import org.engine.io.Window;
 public class App {
 
     public static void mainLoop(float deltaTime) {
+        Input.processPendingInput();
+
         System.out.println(
             Input.isKeyJustPressed(GLFW_KEY_SPACE) +
                 " : " +
@@ -19,8 +21,6 @@ public class App {
                 " : " +
                 Input.getMousePosition()
         );
-
-        Input.processPendingInput();
     }
 
     public static void main(String[] args) {

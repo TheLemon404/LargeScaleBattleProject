@@ -88,7 +88,10 @@ public class Input {
         keyStateChangeStack.push(
             new AbstractMap.SimpleEntry<Integer, Boolean>(
                 key,
-                action == GLFW_PRESS || action == GLFW_REPEAT ? true : false
+                (action == GLFW_PRESS || action == GLFW_REPEAT) &&
+                    action != GLFW_RELEASE
+                    ? true
+                    : false
             )
         );
     }
@@ -102,7 +105,10 @@ public class Input {
         mouseButtonStateChangeStack.push(
             new AbstractMap.SimpleEntry<Integer, Boolean>(
                 button,
-                action == GLFW_PRESS || action == GLFW_REPEAT ? true : false
+                (action == GLFW_PRESS || action == GLFW_REPEAT) &&
+                    action != GLFW_RELEASE
+                    ? true
+                    : false
             )
         );
     }
@@ -118,6 +124,27 @@ public class Input {
     }
 
     public static void processPendingInput() {
+        for (Map.Entry<
+            Integer,
+            PressableState
+        > entry : keyStatesMap.entrySet()) {
+            if (entry.getValue() == PressableState.JUST_PRESSED) {
+                entry.setValue(PressableState.PRESSED);
+            } else if (entry.getValue() == PressableState.JUST_RELEASED) {
+                entry.setValue(PressableState.RELEASED);
+            }
+        }
+        for (Map.Entry<
+            Integer,
+            PressableState
+        > entry : mouseButtonStatesMap.entrySet()) {
+            if (entry.getValue() == PressableState.JUST_PRESSED) {
+                entry.setValue(PressableState.PRESSED);
+            } else if (entry.getValue() == PressableState.JUST_RELEASED) {
+                entry.setValue(PressableState.RELEASED);
+            }
+        }
+
         while (!keyStateChangeStack.empty()) {
             AbstractMap.SimpleEntry<Integer, Boolean> keyState =
                 keyStateChangeStack.pop();
@@ -146,13 +173,6 @@ public class Input {
                 keyStatesMap.put(
                     keyState.getKey(),
                     PressableState.JUST_RELEASED
-                );
-            } else {
-                keyStatesMap.put(
-                    keyState.getKey(),
-                    keyState.getValue()
-                        ? PressableState.PRESSED
-                        : PressableState.RELEASED
                 );
             }
         }
@@ -186,13 +206,6 @@ public class Input {
                 mouseButtonStatesMap.put(
                     mouseButtonState.getKey(),
                     PressableState.JUST_RELEASED
-                );
-            } else {
-                mouseButtonStatesMap.put(
-                    mouseButtonState.getKey(),
-                    mouseButtonState.getValue()
-                        ? PressableState.PRESSED
-                        : PressableState.RELEASED
                 );
             }
         }
