@@ -3,7 +3,7 @@ package org.engine.graphics;
 import java.util.ArrayList;
 import org.engine.scene.Entity;
 
-public class Batch<T extends Entity & Batchable> implements Renderable {
+public class Batch<T extends Batchable> implements Renderable {
 
     private ArrayList<T> instances = new ArrayList<T>();
 

@@ -5,6 +5,6 @@ import org.engine.scene.Entity;
 public interface Batchable {
     public void extractBatchInstanceData(
         GraphicsContext context,
-        Batch<? extends Entity> batch
+        Batch<? extends Batchable> batch
     );
 }
