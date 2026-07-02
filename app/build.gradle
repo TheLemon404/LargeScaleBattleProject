@@ -5,6 +5,8 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/9.5.0/userguide/building_java_projects.html in the Gradle documentation.
  */
 
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
@@ -12,7 +14,23 @@ plugins {
 
 project.ext.lwjglVersion = "3.4.1"
 project.ext.jomlVersion = "1.10.9"
-project.ext.lwjglNatives = "natives-windows"
+
+switch (OperatingSystem.current()) {
+	case OperatingSystem.LINUX:
+		project.ext.lwjglNatives = "natives-linux"
+		def osArch = System.getProperty("os.arch")
+		if (osArch.startsWith("arm") || osArch.startsWith("aarch64")) {
+			project.ext.lwjglNatives += osArch.contains("64") || osArch.startsWith("armv8") ? "-arm64" : "-arm32"
+		} else if  (osArch.startsWith("ppc")) {
+			project.ext.lwjglNatives += "-ppc64le"
+		} else if  (osArch.startsWith("riscv")) {
+			project.ext.lwjglNatives += "-riscv64"
+		}
+		break
+	case OperatingSystem.WINDOWS:
+		project.ext.lwjglNatives = "natives-windows"
+		break
+}
 
 repositories {
     // Use Maven Central for resolving dependencies.
