@@ -9,6 +9,7 @@ import java.nio.*;
 import java.util.function.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL46C;
 import org.lwjgl.system.MemoryStack;
 
 public class Window {
@@ -67,6 +68,8 @@ public class Window {
 
         glfwMakeContextCurrent(glfwWindow);
 
+        GL.createCapabilities();
+
         glfwSetKeyCallback(glfwWindow, Input::glfwKeyCallback);
         glfwSetMouseButtonCallback(glfwWindow, Input::glfwMouseButtonCallback);
         glfwSetCursorPosCallback(glfwWindow, Input::glfwMousePositionCallback);
@@ -86,12 +89,12 @@ public class Window {
         glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
         while (!ShouldClose()) {
-            glfwPollEvents();
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             loopFunction.accept(1.0f);
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glfwSwapBuffers(glfwWindow);
+            glfwPollEvents();
         }
     }
 

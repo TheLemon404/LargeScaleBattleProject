@@ -5,28 +5,37 @@ package org;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+import static org.lwjgl.opengl.GL46C.*;
 
+import org.engine.graphics.Mesh;
+import org.engine.graphics.Vertex;
 import org.engine.io.Input;
 import org.engine.io.Window;
+import org.joml.Vector3f;
 
 public class App {
 
-    public static void mainLoop(float deltaTime) {
-        Input.processPendingInput();
-
-        System.out.println(
-            Input.isKeyJustPressed(GLFW_KEY_SPACE) +
-                " : " +
-                Input.isMouseButtonJustPressed(GLFW_MOUSE_BUTTON_1) +
-                " : " +
-                Input.getMousePosition()
-        );
-    }
-
     public static void main(String[] args) {
+        Vertex[] vertices = new Vertex[] {
+            new Vertex(new Vector3f(-0.5f, -0.5f, 0.0f)),
+            new Vertex(new Vector3f(0.5f, -0.5f, 0.0f)),
+            new Vertex(new Vector3f(0.0f, 0.5f, 0.0f)),
+        };
+
         Window window = new Window();
         window.open("Test Window");
-        window.loop(App::mainLoop);
+        int vao = glGenVertexArrays();
+        glBindVertexArray(vao);
+
+        Mesh mesh = new Mesh();
+        mesh.storeVertices(vertices, new int[] { 0, 1, 2 });
+
+        window.loop(dalta -> {
+            Input.processPendingInput();
+            glBindVertexArray(mesh.vao);
+            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        });
+
         window.close();
     }
 }

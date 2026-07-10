@@ -28,7 +28,7 @@ public class Shader {
     public void Compile() {}
 
     public int GetUniformLocation(String uniform) {
-        return GL46.glGetUniformLocation(programId, uniform);
+        return glGetUniformLocation(programId, uniform);
     }
 
     public void SetShaderUniformFloat(int location, float val) {
