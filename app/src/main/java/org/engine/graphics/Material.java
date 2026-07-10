@@ -6,34 +6,38 @@ import org.joml.Vector4f;
 
 public class Material {
 
-    public Shader shader;
+    public final Shader shader;
 
-    public <T> void SetParam(String paramName, T value)
+    public Material(Shader shader) {
+        this.shader = shader;
+    }
+
+    public <T> void setParam(String paramName, T value)
         throws RuntimeException {
-        int location = shader.GetUniformLocation(paramName);
+        int location = shader.getUniformLocation(paramName);
         if (location == -1) throw new RuntimeException(
             "The shader: " +
                 shader.name +
                 " does not contain uniform parameter: " +
                 paramName
         );
-        if (value instanceof Float) shader.SetShaderUniformFloat(
+        if (value instanceof Float) shader.setShaderUniformFloat(
             location,
             (Float) value
         );
-        else if (value instanceof Integer) shader.SetShaderUniformInt(
+        else if (value instanceof Integer) shader.setShaderUniformInt(
             location,
             (Integer) value
         );
-        else if (value instanceof Vector2f) shader.SetShaderUniformVector2f(
+        else if (value instanceof Vector2f) shader.setShaderUniformVector2f(
             location,
             (Vector2f) value
         );
-        else if (value instanceof Vector3f) shader.SetShaderUniformVector3f(
+        else if (value instanceof Vector3f) shader.setShaderUniformVector3f(
             location,
             (Vector3f) value
         );
-        else if (value instanceof Vector4f) shader.SetShaderUniformVector4f(
+        else if (value instanceof Vector4f) shader.setShaderUniformVector4f(
             location,
             (Vector4f) value
         );

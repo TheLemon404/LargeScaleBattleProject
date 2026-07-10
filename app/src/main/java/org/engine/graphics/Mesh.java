@@ -4,7 +4,6 @@ import static org.lwjgl.opengl.GL46C.*;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import org.engine.assets.AID;
 import org.lwjgl.BufferUtils;
 
 public class Mesh {
@@ -56,5 +55,8 @@ public class Mesh {
         ebo = glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, eBuffer, GL_STATIC_DRAW);
+
+        vertexCount = vertices.length;
+        indexCount = indices.length;
     }
 }

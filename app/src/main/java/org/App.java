@@ -8,6 +8,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.opengl.GL46C.*;
 
 import org.engine.graphics.Mesh;
+import org.engine.graphics.Shader;
 import org.engine.graphics.Vertex;
 import org.engine.io.Input;
 import org.engine.io.Window;
@@ -27,11 +28,19 @@ public class App {
         int vao = glGenVertexArrays();
         glBindVertexArray(vao);
 
+        Shader shader = new Shader(
+            "default",
+            "resources/shaders/default.vert",
+            "resources/shaders/default.frag"
+        );
+        shader.compile();
+
         Mesh mesh = new Mesh();
         mesh.storeVertices(vertices, new int[] { 0, 1, 2 });
 
         window.loop(dalta -> {
             Input.processPendingInput();
+            shader.use();
             glBindVertexArray(mesh.vao);
             glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         });

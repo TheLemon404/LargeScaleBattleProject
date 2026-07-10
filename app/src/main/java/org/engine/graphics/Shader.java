@@ -2,6 +2,11 @@ package org.engine.graphics;
 
 import static org.lwjgl.opengl.GL46C.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -12,42 +17,124 @@ public class Shader {
     private int programId = -1;
     private int vertexShaderId = -1;
     private int fragmentShaderId = -1;
-    public String vertexSourceFile;
-    public String fragmentSourceFile;
+    public final String vertexSourcePath;
+    public final String fragmentSourcePath;
+
+    private Map<String, Integer> cachedShaderLocations = new HashMap<>();
 
     public Shader(
         String name,
-        String vertexSourceFile,
-        String fragmentSourceFile
+        String vertexSourcePath,
+        String fragmentSourcePath
     ) {
         this.name = name;
-        this.vertexSourceFile = vertexSourceFile;
-        this.fragmentSourceFile = fragmentSourceFile;
+        this.vertexSourcePath = vertexSourcePath;
+        this.fragmentSourcePath = fragmentSourcePath;
     }
 
-    public void Compile() {}
+    public void compile() throws RuntimeException {
+        String vertexSource = "";
+        String fragmentSource = "";
+        try {
+            vertexSource = Files.readString(Path.of(vertexSourcePath));
+            fragmentSource = Files.readString(Path.of(fragmentSourcePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    public int GetUniformLocation(String uniform) {
-        return glGetUniformLocation(programId, uniform);
+        programId = glCreateProgram();
+        if (programId == 0) throw new RuntimeException(
+            "Failed to create shader program at shader: " + name
+        );
+
+        vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+        if (vertexShaderId == 0) throw new RuntimeException(
+            "Failed to create vertex shader at shader: " + name
+        );
+        glShaderSource(vertexShaderId, vertexSource);
+        glCompileShader(vertexShaderId);
+        if (glGetShaderi(vertexShaderId, GL_COMPILE_STATUS) == GL_FALSE) {
+            throw new RuntimeException(
+                "Error compiling shader: " +
+                    name +
+                    ": " +
+                    glGetShaderInfoLog(vertexShaderId)
+            );
+        }
+
+        fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+        if (fragmentShaderId == 0) throw new RuntimeException(
+            "Failed to create fragment shader at shader: " + name
+        );
+        glShaderSource(fragmentShaderId, fragmentSource);
+        glCompileShader(fragmentShaderId);
+        if (glGetShaderi(fragmentShaderId, GL_COMPILE_STATUS) == GL_FALSE) {
+            throw new RuntimeException(
+                "Error compiling shader: " +
+                    name +
+                    ": " +
+                    glGetShaderInfoLog(fragmentShaderId)
+            );
+        }
+
+        glAttachShader(programId, vertexShaderId);
+        glAttachShader(programId, fragmentShaderId);
+        glLinkProgram(programId);
+        if (glGetProgrami(programId, GL_LINK_STATUS) == GL_FALSE) {
+            throw new RuntimeException(
+                "Error linking shader: " +
+                    name +
+                    ": " +
+                    glGetProgramInfoLog(programId)
+            );
+        }
+
+        glDetachShader(programId, vertexShaderId);
+        glDetachShader(programId, fragmentShaderId);
+        glDeleteShader(vertexShaderId);
+        glDeleteShader(fragmentShaderId);
     }
 
-    public void SetShaderUniformFloat(int location, float val) {
+    public void use() {
+        glUseProgram(programId);
+    }
+
+    public void stopUsing() {
+        glUseProgram(0);
+    }
+
+    public void delete() {
+        stopUsing();
+        glDeleteProgram(programId);
+    }
+
+    public int getUniformLocation(String uniform) {
+        if (
+            cachedShaderLocations.containsKey(uniform)
+        ) return cachedShaderLocations.get(uniform);
+
+        int location = glGetUniformLocation(programId, uniform);
+        cachedShaderLocations.put(uniform, location);
+        return location;
+    }
+
+    public void setShaderUniformFloat(int location, float val) {
         glUniform1f(location, val);
     }
 
-    public void SetShaderUniformInt(int location, int val) {
+    public void setShaderUniformInt(int location, int val) {
         glUniform1i(location, val);
     }
 
-    public void SetShaderUniformVector2f(int location, Vector2f val) {
+    public void setShaderUniformVector2f(int location, Vector2f val) {
         glUniform2f(location, val.x, val.y);
     }
 
-    public void SetShaderUniformVector3f(int location, Vector3f val) {
+    public void setShaderUniformVector3f(int location, Vector3f val) {
         glUniform3f(location, val.x, val.y, val.z);
     }
 
-    public void SetShaderUniformVector4f(int location, Vector4f val) {
+    public void setShaderUniformVector4f(int location, Vector4f val) {
         glUniform4f(location, val.x, val.y, val.z, val.w);
     }
 }
