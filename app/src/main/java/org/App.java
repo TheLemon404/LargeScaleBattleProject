@@ -7,11 +7,13 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.opengl.GL46C.*;
 
+import org.engine.graphics.Material;
 import org.engine.graphics.Mesh;
 import org.engine.graphics.Shader;
 import org.engine.graphics.Vertex;
 import org.engine.io.Input;
 import org.engine.io.Window;
+import org.engine.scene.Transform;
 import org.joml.Vector3f;
 
 public class App {
@@ -37,12 +39,11 @@ public class App {
 
         Mesh mesh = new Mesh();
         mesh.storeVertices(vertices, new int[] { 0, 1, 2 });
+        mesh.material = new Material("test material", shader);
 
         window.loop(dalta -> {
             Input.processPendingInput();
-            shader.use();
-            glBindVertexArray(mesh.vao);
-            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+            mesh.draw(new Transform());
         });
 
         window.close();

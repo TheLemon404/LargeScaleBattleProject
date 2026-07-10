@@ -4,10 +4,11 @@ import static org.lwjgl.opengl.GL46C.*;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import org.engine.scene.Transform;
 import org.lwjgl.BufferUtils;
 
 public class Mesh {
-
     public Material material;
 
     public int vao = -1;
@@ -58,5 +59,16 @@ public class Mesh {
 
         vertexCount = vertices.length;
         indexCount = indices.length;
+    }
+
+    public void draw(Transform transform) throws RuntimeException {
+        if(material == null) {
+            throw new RuntimeException("Cannot draw mesh with vao: " + vao + " whos material is null");
+        }
+
+        material.shader.use();
+        material.uploadParams();
+        glBindVertexArray(vao);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
     }
 }

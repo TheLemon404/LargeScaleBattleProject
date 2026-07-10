@@ -6,6 +6,20 @@ public class Entity {
     protected EID id;
     protected EID parent;
 
+    private Transform transform = new Transform();
+
+    public Transform getLocalTransform() {
+        return transform;
+    }
+
+    public Transform getGlobalTransform() {
+        if(parent != Tree.root) {
+            return transform.add(Tree.getEntityById(parent, Entity.class).getGlobalTransform());
+        }
+
+        return transform;
+    }
+
     public Entity(String name, EID parent) {
         this.name = name;
 
