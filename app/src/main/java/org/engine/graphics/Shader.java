@@ -113,9 +113,9 @@ public class Shader {
 
     public ArrayList<String> getAllUniformNames() {
         int uniformCount = glGetProgrami(programId,GL_ACTIVE_UNIFORMS);
-        ArrayList<String> names = new ArrayList<>(uniformCount);
+        ArrayList<String> names = new ArrayList<>();
         for(int i = 0; i < uniformCount; i++) {
-            names.set(i, glGetActiveUniformName(programId, i));
+            names.add(glGetActiveUniformName(programId, i));
         }
         return names;
     }

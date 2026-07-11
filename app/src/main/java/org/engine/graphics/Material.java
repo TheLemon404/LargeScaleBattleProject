@@ -2,6 +2,7 @@ package org.engine.graphics;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -31,6 +32,10 @@ public class Material {
         if(!params.containsKey(paramName)) throw new Exception("Material: " + name + " does not contain a parameter: " + paramName);
 
         return params.get(paramName);
+    }
+
+    public Set<String> getParamNames() {
+        return params.keySet();
     }
 
     private <T> void setShaderUniform(String paramName, T value) throws RuntimeException {
