@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -148,5 +150,11 @@ public class Shader {
 
     public void setShaderUniformVector4f(int location, Vector4f val) {
         glUniform4f(location, val.x, val.y, val.z, val.w);
+    }
+
+    public void setShaderUniformMatrix4f(int location, Matrix4f val) {
+        float[] data = new float[16];
+        val.get(data);
+        glUniformMatrix4fv(location, false, data);
     }
 }
