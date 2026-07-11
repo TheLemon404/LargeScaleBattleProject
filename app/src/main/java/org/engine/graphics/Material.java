@@ -16,11 +16,14 @@ public class Material {
     public Material(String name, Shader shader) {
         this.name = name;
         this.shader = shader;
+        for(String uniformName : shader.getAllUniformNames()) {
+            params.put(uniformName, null);
+        }
     }
 
     public void uploadParams() {
         for(Map.Entry<String, Object> param : params.entrySet()) {
-            setShaderUniform(param.getKey(), param.getValue());
+            if(param.getValue() != null) setShaderUniform(param.getKey(), param.getValue());
         }
     }
 

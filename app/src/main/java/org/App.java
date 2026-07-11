@@ -3,8 +3,6 @@
  */
 package org;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.opengl.GL46C.*;
 
 import org.engine.graphics.Material;

@@ -1,7 +1,6 @@
 package org.engine.graphics;
 
 import java.util.ArrayList;
-import org.engine.scene.Entity;
 
 public class Batch<T extends Batchable> implements Renderable {
 

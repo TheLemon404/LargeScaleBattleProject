@@ -3,13 +3,16 @@ package org.engine.graphics;
 import static org.lwjgl.opengl.GL46C.*;
 
 import java.io.IOException;
+import java.nio.IntBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.BufferUtils;
 
 public class Shader {
 
@@ -106,6 +109,15 @@ public class Shader {
     public void delete() {
         stopUsing();
         glDeleteProgram(programId);
+    }
+
+    public ArrayList<String> getAllUniformNames() {
+        int uniformCount = glGetProgrami(programId,GL_ACTIVE_UNIFORMS);
+        ArrayList<String> names = new ArrayList<>(uniformCount);
+        for(int i = 0; i < uniformCount; i++) {
+            names.set(i, glGetActiveUniformName(programId, i));
+        }
+        return names;
     }
 
     public int getUniformLocation(String uniform) {
