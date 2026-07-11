@@ -12,6 +12,7 @@ import org.engine.graphics.Vertex;
 import org.engine.io.Input;
 import org.engine.io.Window;
 import org.engine.scene.Transform;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class App {
@@ -38,6 +39,7 @@ public class App {
         Mesh mesh = new Mesh();
         mesh.storeVertices(vertices, new int[] { 0, 1, 2 });
         mesh.material = new Material("test material", shader);
+        mesh.material.setParam("transform", new Matrix4f().identity());
 
         window.loop(dalta -> {
             Input.processPendingInput();

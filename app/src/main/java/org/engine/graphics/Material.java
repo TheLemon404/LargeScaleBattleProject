@@ -3,12 +3,13 @@ package org.engine.graphics;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class Material {
+
     public final String name;
     public final Shader shader;
 
@@ -17,19 +18,24 @@ public class Material {
     public Material(String name, Shader shader) {
         this.name = name;
         this.shader = shader;
-        for(String uniformName : shader.getAllUniformNames()) {
+        for (String uniformName : shader.getAllUniformNames()) {
             params.put(uniformName, null);
         }
     }
 
     public void uploadParams() {
-        for(Map.Entry<String, Object> param : params.entrySet()) {
-            if(param.getValue() != null) setShaderUniform(param.getKey(), param.getValue());
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            if (param.getValue() != null) setShaderUniform(
+                param.getKey(),
+                param.getValue()
+            );
         }
     }
 
     public Object getParam(String paramName) throws Exception {
-        if(!params.containsKey(paramName)) throw new Exception("Material: " + name + " does not contain a parameter: " + paramName);
+        if (!params.containsKey(paramName)) throw new Exception(
+            "Material: " + name + " does not contain a parameter: " + paramName
+        );
 
         return params.get(paramName);
     }
@@ -38,7 +44,8 @@ public class Material {
         return params.keySet();
     }
 
-    private <T> void setShaderUniform(String paramName, T value) throws RuntimeException {
+    private <T> void setShaderUniform(String paramName, T value)
+        throws RuntimeException {
         int location = shader.getUniformLocation(paramName);
         if (location == -1) throw new RuntimeException(
             "The shader: " +
@@ -65,6 +72,10 @@ public class Material {
         else if (value instanceof Vector4f) shader.setShaderUniformVector4f(
             location,
             (Vector4f) value
+        );
+        else if (value instanceof Matrix4f) shader.setShaderUniformMatrix4f(
+            location,
+            (Matrix4f) value
         );
         else {
             throw new RuntimeException(
