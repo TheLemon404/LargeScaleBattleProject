@@ -96,6 +96,8 @@ public class Material {
     }
 
     public <T> void setParam(String paramName, T value) {
+        if (shader.getUniformLocation(paramName) == -1) return;
+
         params.put(paramName, value);
     }
 

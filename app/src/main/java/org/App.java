@@ -46,9 +46,14 @@ public class App {
         glBindVertexArray(vao);
 
         new Shader(
-            "default",
-            "resources/shaders/default.vert",
-            "resources/shaders/default.frag"
+            "unlit",
+            "resources/shaders/spacial.vert",
+            "resources/shaders/unlit.frag"
+        ).compile();
+        new Shader(
+            "unlit_textured",
+            "resources/shaders/spacial.vert",
+            "resources/shaders/unlit_textured.frag"
         ).compile();
 
         new Texture("nb", "resources/textures/nb.jpg");
@@ -57,9 +62,11 @@ public class App {
         mesh.storeVertices(vertices, new int[] { 0, 1, 3, 1, 2, 3 });
         mesh.material = new Material(
             "test material",
-            (Shader) AssetRegistry.getAssetByName("default")
+            (Shader) AssetRegistry.getAssetByName("unlit_textured")
         );
         mesh.material.setParam("transform", new Matrix4f().identity());
+        mesh.material.setParam("albedo", new Vector3f(1.0f, 1.0f, 0.0f));
+        mesh.material.setParam("alpha", 1);
         mesh.material.setParam("tex", 0);
         mesh.material.setTextureSlot(
             0,
