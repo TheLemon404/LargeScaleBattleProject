@@ -1,20 +1,24 @@
 package org.engine.scene;
 
+import java.util.ArrayList;
+
 public class Entity {
 
     protected String name;
     protected EID id;
     protected EID parent;
 
-    private Transform transform = new Transform();
+    public Transform transform = new Transform();
 
     public Transform getLocalTransform() {
         return transform;
     }
 
     public Transform getGlobalTransform() {
-        if(parent != Tree.root) {
-            return transform.add(Tree.getEntityById(parent, Entity.class).getGlobalTransform());
+        if (parent != Tree.root) {
+            return transform.add(
+                Tree.getEntityById(parent, Entity.class).getGlobalTransform()
+            );
         }
 
         return transform;
@@ -68,5 +72,15 @@ public class Entity {
 
     public void destroy() {
         Tree.registry.deregisterEntity(this);
+    }
+
+    //todo need to impliment this
+    public ArrayList<Entity> getChildren() {
+        return new ArrayList<>();
+    }
+
+    //todo need to impliment this
+    public ArrayList<Entity> getAllChildren() {
+        return new ArrayList<>();
     }
 }

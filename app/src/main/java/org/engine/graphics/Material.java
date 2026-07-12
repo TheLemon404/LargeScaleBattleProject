@@ -5,12 +5,13 @@ import static org.lwjgl.opengl.GL46C.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.engine.assets.Asset;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class Material {
+public class Material extends Asset {
 
     public final String name;
     public final Shader shader;
@@ -19,6 +20,7 @@ public class Material {
     private Map<Integer, Texture> textureSlots = new HashMap<>();
 
     public Material(String name, Shader shader) {
+        super(name);
         this.name = name;
         this.shader = shader;
         for (String uniformName : shader.getAllUniformNames()) {

@@ -1,5 +1,8 @@
 package org.engine.scene;
 
+import java.awt.List;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,5 +58,9 @@ public class EntityRegistry {
 
     public void deregisterEntity(Entity entity) {
         entityMap.remove(entity.id);
+    }
+
+    public Collection<Entity> getRegisterdEntities() {
+        return entityMap.values();
     }
 }

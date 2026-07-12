@@ -9,12 +9,18 @@ import static org.lwjgl.opengl.GL46C.*;
 import org.engine.assets.AssetRegistry;
 import org.engine.graphics.Material;
 import org.engine.graphics.Mesh;
+import org.engine.graphics.Renderable;
 import org.engine.graphics.Shader;
 import org.engine.graphics.Texture;
 import org.engine.graphics.Vertex;
 import org.engine.io.Input;
 import org.engine.io.Window;
+import org.engine.scene.Camera;
+import org.engine.scene.Entity;
+import org.engine.scene.EntityRegistry;
+import org.engine.scene.Model;
 import org.engine.scene.Transform;
+import org.engine.scene.Tree;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
@@ -41,6 +47,10 @@ public class App {
 
         new Texture("nb", "resources/textures/nb.jpg");
 
+        Camera cam = new Camera();
+        cam.transform.position.z = -1.0f;
+        cam.recomputeMatrices(window);
+
         Mesh mesh = new Mesh("test");
         mesh.storeVertices(
             Vertex.generateCubeVertices(),
@@ -54,6 +64,11 @@ public class App {
             "transform",
             new Matrix4f().identity().rotateY(2.0f)
         );
+        mesh.material.setParam(
+            "projection",
+            Camera.activeCamera.getProjection()
+        );
+        mesh.material.setParam("view", Camera.activeCamera.getView());
         mesh.material.setParam("albedo", new Vector3f(1.0f, 1.0f, 0.0f));
         mesh.material.setParam("alpha", 1);
         mesh.material.setParam("tex", 0);
@@ -62,14 +77,15 @@ public class App {
             (Texture) AssetRegistry.getAssetByName("nb")
         );
 
-        Transform t = new Transform();
+        new Model(mesh);
 
         glEnable(GL_DEPTH_TEST);
 
         window.loop(delta -> {
             Input.processPendingInput();
-            mesh.draw(t);
-            t.rotation.rotateY(delta / 100.0f);
+            for (Entity e : Tree.registry.getRegisterdEntities()) {
+                if (e instanceof Renderable) ((Renderable) e).draw();
+            }
         });
 
         window.close();

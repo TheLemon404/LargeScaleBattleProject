@@ -13,5 +13,5 @@ public class Batch<T extends Batchable> implements Renderable {
         }
     }
 
-    public void draw(Mesh mesh, Transform transform) {}
+    public void draw() {}
 }

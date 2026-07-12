@@ -9,7 +9,6 @@ import java.nio.*;
 import java.util.function.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL46C;
 import org.lwjgl.system.MemoryStack;
 
 public class Window {
@@ -33,6 +32,14 @@ public class Window {
     ) {
         this.width = width;
         this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void open(String title) throws IllegalStateException {
