@@ -13,6 +13,14 @@ public abstract class Asset {
         }
     }
 
+    public Asset(String name) {
+        try {
+            AssetRegistry.registerAssetWithName(name, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void unload() {
         AssetRegistry.deregisterAsset(this);
     }

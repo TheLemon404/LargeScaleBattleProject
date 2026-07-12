@@ -9,14 +9,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+import org.engine.assets.Asset;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
-public class Shader {
+public class Shader extends Asset {
 
     public final String name;
     private int programId = -1;
@@ -32,6 +32,8 @@ public class Shader {
         String vertexSourcePath,
         String fragmentSourcePath
     ) {
+        super(name);
+
         this.name = name;
         this.vertexSourcePath = vertexSourcePath;
         this.fragmentSourcePath = fragmentSourcePath;
@@ -114,9 +116,9 @@ public class Shader {
     }
 
     public ArrayList<String> getAllUniformNames() {
-        int uniformCount = glGetProgrami(programId,GL_ACTIVE_UNIFORMS);
+        int uniformCount = glGetProgrami(programId, GL_ACTIVE_UNIFORMS);
         ArrayList<String> names = new ArrayList<>();
-        for(int i = 0; i < uniformCount; i++) {
+        for (int i = 0; i < uniformCount; i++) {
             names.add(glGetActiveUniformName(programId, i));
         }
         return names;

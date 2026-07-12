@@ -1,5 +1,6 @@
 package org.engine.assets;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class AssetRegistry {
@@ -17,15 +18,33 @@ public class AssetRegistry {
         assetMap.put(asset.id, asset);
     }
 
-    public static void registerAssetWithName(String name, Asset asset) throws Exception {
+    public static void registerAssetWithName(String name, Asset asset)
+        throws Exception {
         asset.name = name;
         registerAsset(asset);
 
-        if(assetNameMap.containsKey(name)) throw new Exception("Asset with name: " + name + " already registered");
+        if (assetNameMap.containsKey(name)) throw new Exception(
+            "Asset with name: " + name + " already registered"
+        );
         assetNameMap.put(name, asset.id);
     }
 
     public static void deregisterAsset(Asset asset) {
         assetMap.remove(asset.id);
+    }
+
+    public static Asset getAsset(AID id) throws NoSuchElementException {
+        if (!assetMap.containsKey(id)) throw new NoSuchElementException(
+            "Asset with id: " + id + " not found in asset registry"
+        );
+        return assetMap.get(id);
+    }
+
+    public static Asset getAssetByName(String name)
+        throws NoSuchElementException {
+        if (!assetNameMap.containsKey(name)) throw new NoSuchElementException(
+            "Asset with name: " + name + " not found in asset registry"
+        );
+        return assetMap.get(assetNameMap.get(name));
     }
 }

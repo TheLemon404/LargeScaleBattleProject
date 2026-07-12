@@ -5,6 +5,7 @@ package org;
 
 import static org.lwjgl.opengl.GL46C.*;
 
+import org.engine.assets.AssetRegistry;
 import org.engine.graphics.Material;
 import org.engine.graphics.Mesh;
 import org.engine.graphics.Shader;
@@ -29,16 +30,18 @@ public class App {
         int vao = glGenVertexArrays();
         glBindVertexArray(vao);
 
-        Shader shader = new Shader(
+        new Shader(
             "default",
             "resources/shaders/default.vert",
             "resources/shaders/default.frag"
-        );
-        shader.compile();
+        ).compile();
 
         Mesh mesh = new Mesh();
         mesh.storeVertices(vertices, new int[] { 0, 1, 2 });
-        mesh.material = new Material("test material", shader);
+        mesh.material = new Material(
+            "test material",
+            (Shader) AssetRegistry.getAssetByName("default")
+        );
         mesh.material.setParam("transform", new Matrix4f().identity());
 
         window.loop(dalta -> {

@@ -1,5 +1,7 @@
 package org.engine.graphics;
 
+import org.engine.scene.Transform;
+
 public interface Renderable {
-    public void draw(GraphicsContext context);
+    public void draw(Mesh mesh, Transform transform);
 }

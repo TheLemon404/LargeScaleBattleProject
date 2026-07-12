@@ -4,11 +4,12 @@ import static org.lwjgl.opengl.GL46C.*;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-
+import org.engine.assets.Asset;
 import org.engine.scene.Transform;
 import org.lwjgl.BufferUtils;
 
-public class Mesh {
+public class Mesh extends Asset {
+
     public Material material;
 
     public int vao = -1;
@@ -16,6 +17,14 @@ public class Mesh {
     public int ebo = -1;
     public int vertexCount = 0;
     public int indexCount = 0;
+
+    public Mesh() {
+        super();
+    }
+
+    public Mesh(String name) {
+        super(name);
+    }
 
     public void storeVertices(Vertex[] vertices, int[] indices) {
         vao = glGenVertexArrays();
@@ -62,8 +71,10 @@ public class Mesh {
     }
 
     public void draw(Transform transform) throws RuntimeException {
-        if(material == null) {
-            throw new RuntimeException("Cannot draw mesh with vao: " + vao + " whos material is null");
+        if (material == null) {
+            throw new RuntimeException(
+                "Cannot draw mesh with vao: " + vao + " whos material is null"
+            );
         }
 
         material.shader.use();
