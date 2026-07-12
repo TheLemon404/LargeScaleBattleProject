@@ -1,5 +1,7 @@
 package org.engine.graphics;
 
+import static org.lwjgl.opengl.GL46C.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +16,7 @@ public class Material {
     public final Shader shader;
 
     private Map<String, Object> params = new HashMap<>();
+    private Map<Integer, Texture> textureSlots = new HashMap<>();
 
     public Material(String name, Shader shader) {
         this.name = name;
@@ -29,6 +32,13 @@ public class Material {
                 param.getKey(),
                 param.getValue()
             );
+        }
+    }
+
+    public void bindTextureSlots() {
+        for (Map.Entry<Integer, Texture> slot : textureSlots.entrySet()) {
+            glActiveTexture(slot.getKey() + 33984);
+            glBindTexture(GL_TEXTURE_2D, slot.getValue().id);
         }
     }
 
@@ -87,5 +97,9 @@ public class Material {
 
     public <T> void setParam(String paramName, T value) {
         params.put(paramName, value);
+    }
+
+    public void setTextureSlot(int slot, Texture texture) {
+        textureSlots.put(slot, texture);
     }
 }

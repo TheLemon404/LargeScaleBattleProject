@@ -53,7 +53,7 @@ public class Mesh extends Asset {
             GL_FLOAT,
             false,
             Vertex.BYTES,
-            5 * Float.BYTES
+            6 * Float.BYTES
         );
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
@@ -80,6 +80,7 @@ public class Mesh extends Asset {
         material.shader.use();
         material.uploadParams();
         glBindVertexArray(vao);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        material.bindTextureSlots();
+        glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
     }
 }

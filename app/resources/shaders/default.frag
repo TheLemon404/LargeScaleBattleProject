@@ -1,7 +1,11 @@
 #version 330 core
 
+in vec2 pUv;
+
+uniform sampler2D tex;
+
 out vec4 FragColor; // Color output
 
 void main() {
-    FragColor = vec4(1.0, 0.5, 0.2, 1.0); // Outputs an orange color
+    FragColor = texture(tex, pUv);
 }

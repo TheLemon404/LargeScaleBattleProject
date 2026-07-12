@@ -61,6 +61,11 @@ public class Vertex {
         this.uv = uv;
     }
 
+    public Vertex(Vector3f position, Vector2f uv) {
+        this(position);
+        this.uv = uv;
+    }
+
     public Vertex(Vector3f position, Vector3f normal) {
         this(position);
         this.normal = normal;
