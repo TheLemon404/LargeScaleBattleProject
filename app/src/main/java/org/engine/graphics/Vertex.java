@@ -74,4 +74,199 @@ public class Vertex {
     public Vertex(Vector3f position) {
         this.position = position;
     }
+
+    public static Vertex[] generateCubeVertices() {
+        // Cube vertices (side length = 1, centered at origin)
+        Vertex[] vertices = new Vertex[24]; // 4 vertices per face × 6 faces
+
+        // Helper to make vertex with position, normal, and UV
+        int i = 0;
+
+        // === FRONT (Z = +0.5) ===
+        Vector3f frontNormal = new Vector3f(0, 0, 1);
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, -0.5f, 0.5f),
+            frontNormal,
+            new Vector2f(0.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, -0.5f, 0.5f),
+            frontNormal,
+            new Vector2f(1.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, 0.5f, 0.5f),
+            frontNormal,
+            new Vector2f(1.0f, 1.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, 0.5f, 0.5f),
+            frontNormal,
+            new Vector2f(0.0f, 1.0f)
+        );
+
+        // === BACK (Z = -0.5) ===
+        Vector3f backNormal = new Vector3f(0, 0, -1);
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, -0.5f, -0.5f),
+            backNormal,
+            new Vector2f(1.0f, 0.0f)
+        ); // flipped u for correct orientation
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, 0.5f, -0.5f),
+            backNormal,
+            new Vector2f(1.0f, 1.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, 0.5f, -0.5f),
+            backNormal,
+            new Vector2f(0.0f, 1.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, -0.5f, -0.5f),
+            backNormal,
+            new Vector2f(0.0f, 0.0f)
+        );
+
+        // === RIGHT (X = +0.5) ===
+        Vector3f rightNormal = new Vector3f(1, 0, 0);
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, -0.5f, -0.5f),
+            rightNormal,
+            new Vector2f(0.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, -0.5f, 0.5f),
+            rightNormal,
+            new Vector2f(1.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, 0.5f, 0.5f),
+            rightNormal,
+            new Vector2f(1.0f, 1.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, 0.5f, -0.5f),
+            rightNormal,
+            new Vector2f(0.0f, 1.0f)
+        );
+
+        // === LEFT (X = -0.5) ===
+        Vector3f leftNormal = new Vector3f(-1, 0, 0);
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, -0.5f, 0.5f),
+            leftNormal,
+            new Vector2f(0.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, -0.5f, -0.5f),
+            leftNormal,
+            new Vector2f(1.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, 0.5f, -0.5f),
+            leftNormal,
+            new Vector2f(1.0f, 1.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, 0.5f, 0.5f),
+            leftNormal,
+            new Vector2f(0.0f, 1.0f)
+        );
+
+        // === TOP (Y = +0.5) ===
+        Vector3f topNormal = new Vector3f(0, 1, 0);
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, 0.5f, -0.5f),
+            topNormal,
+            new Vector2f(0.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, 0.5f, -0.5f),
+            topNormal,
+            new Vector2f(1.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, 0.5f, 0.5f),
+            topNormal,
+            new Vector2f(1.0f, 1.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, 0.5f, 0.5f),
+            topNormal,
+            new Vector2f(0.0f, 1.0f)
+        );
+
+        // === BOTTOM (Y = -0.5) ===
+        Vector3f bottomNormal = new Vector3f(0, -1, 0);
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, -0.5f, -0.5f),
+            bottomNormal,
+            new Vector2f(0.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(-0.5f, -0.5f, 0.5f),
+            bottomNormal,
+            new Vector2f(1.0f, 0.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, -0.5f, 0.5f),
+            bottomNormal,
+            new Vector2f(1.0f, 1.0f)
+        );
+        vertices[i++] = new Vertex(
+            new Vector3f(0.5f, -0.5f, -0.5f),
+            bottomNormal,
+            new Vector2f(0.0f, 1.0f)
+        );
+
+        return vertices;
+    }
+
+    public static int[] generateCubeIndices() {
+        return new int[] {
+            // FRONT
+            0,
+            1,
+            2,
+            2,
+            3,
+            0,
+            // BACK
+            4,
+            5,
+            6,
+            6,
+            7,
+            4,
+            // RIGHT
+            8,
+            9,
+            10,
+            10,
+            11,
+            8,
+            // LEFT
+            12,
+            13,
+            14,
+            14,
+            15,
+            12,
+            // TOP
+            16,
+            17,
+            18,
+            18,
+            19,
+            16,
+            // BOTTOM
+            20,
+            21,
+            22,
+            22,
+            23,
+            20,
+        };
+    }
 }

@@ -77,6 +77,9 @@ public class Mesh extends Asset {
             );
         }
 
+        transform.computeMatrix();
+        material.setParam("transform", transform.getMatrix());
+
         material.shader.use();
         material.uploadParams();
         glBindVertexArray(vao);

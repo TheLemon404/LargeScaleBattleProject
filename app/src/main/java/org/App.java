@@ -3,6 +3,7 @@
  */
 package org;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.opengl.GL46C.*;
 
 import org.engine.assets.AssetRegistry;
@@ -15,31 +16,13 @@ import org.engine.io.Input;
 import org.engine.io.Window;
 import org.engine.scene.Transform;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class App {
 
     public static void main(String[] args) {
-        Vertex[] vertices = new Vertex[] {
-            new Vertex(
-                new Vector3f(0.5f, 0.5f, 0.0f),
-                new Vector2f(1.0f, 1.0f)
-            ),
-            new Vertex(
-                new Vector3f(0.5f, -0.5f, 0.0f),
-                new Vector2f(1.0f, 0.0f)
-            ),
-            new Vertex(
-                new Vector3f(-0.5f, -0.5f, 0.0f),
-                new Vector2f(0.0f, 0.0f)
-            ),
-            new Vertex(
-                new Vector3f(-0.5f, 0.5f, 0.0f),
-                new Vector2f(0.0f, 1.0f)
-            ),
-        };
-
         Window window = new Window();
         window.open("Test Window");
         int vao = glGenVertexArrays();
@@ -58,13 +41,19 @@ public class App {
 
         new Texture("nb", "resources/textures/nb.jpg");
 
-        Mesh mesh = new Mesh();
-        mesh.storeVertices(vertices, new int[] { 0, 1, 3, 1, 2, 3 });
+        Mesh mesh = new Mesh("test");
+        mesh.storeVertices(
+            Vertex.generateCubeVertices(),
+            Vertex.generateCubeIndices()
+        );
         mesh.material = new Material(
             "test material",
             (Shader) AssetRegistry.getAssetByName("unlit_textured")
         );
-        mesh.material.setParam("transform", new Matrix4f().identity());
+        mesh.material.setParam(
+            "transform",
+            new Matrix4f().identity().rotateY(2.0f)
+        );
         mesh.material.setParam("albedo", new Vector3f(1.0f, 1.0f, 0.0f));
         mesh.material.setParam("alpha", 1);
         mesh.material.setParam("tex", 0);
@@ -73,9 +62,14 @@ public class App {
             (Texture) AssetRegistry.getAssetByName("nb")
         );
 
-        window.loop(dalta -> {
+        Transform t = new Transform();
+
+        glEnable(GL_DEPTH_TEST);
+
+        window.loop(delta -> {
             Input.processPendingInput();
-            mesh.draw(new Transform());
+            mesh.draw(t);
+            t.rotation.rotateY(delta / 100.0f);
         });
 
         window.close();
